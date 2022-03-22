@@ -1,0 +1,31 @@
+#paly video pass test
+gst-launch-1.0 filesrc location=/home/ubuntu/gstream_dev/test.mp4 ! \
+oggdemux name=demux ! queue ! vorbisdec ! autoaudiosink demux. ! \
+queue ! theoradec ! videoconvert ! autovideosink
+
+#H.264 Decode (NVIDIA Accelerated Decode)
+gst-launch-1.0 filesrc location=<filename.mp4> ! \
+  qtdemux name=demux demux.video_0 ! queue ! h264parse ! omxh264dec ! \
+  nveglglessink -e
+
+#H.265 Decode (NVIDIA Accelerated Decode)
+gst-launch-1.0 filesrc location=<filename.mp4> ! \
+  qtdemux name=demux demux.video_0 ! queue ! h265parse ! omxh265dec ! \
+  nvoverlaysink -e
+
+#10-bit H.265 Decode (NVIDIA Accelerated Decode)
+gst-launch-1.0 filesrc location=<filename_10bit.mkv> ! \
+  matroskademux ! h265parse ! omxh265dec ! nvvidconv ! \
+  'video/x-raw(memory:NVMM), format=(string)NV12' ! \
+  nvoverlaysink -e
+
+#12-bit H.265 Decode (NVIDIA Accelerated Decode)
+gst-launch-1.0 filesrc location=<filename_12bit.mkv> ! \
+  matroskademux ! h265parse ! omxh265dec ! nvvidconv ! \
+  'video/x-raw(memory:NVMM), format=(string)NV12' ! \
+  nvoverlaysink -e
+
+#MPEG-4 Decode (NVIDIA Accelerated Decode)
+gst-launch-1.0 filesrc location=<filename.mp4> ! \
+  qtdemux name=demux demux.video_0 ! queue ! mpeg4videoparse ! \
+  omxmpeg4videodec ! nveglglessink -e
