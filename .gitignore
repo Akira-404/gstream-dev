@@ -3,3 +3,7 @@ src/demo1/build/demo
 test.mp4
 src/demo1/build/
 src/demo2/build/
+
+cpp/demo1/build/
+cpp/demo2/build/
+cpp/demo3/build/
